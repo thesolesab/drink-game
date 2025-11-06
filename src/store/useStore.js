@@ -3,6 +3,9 @@ const { create } = require("zustand")
 
 
 const initialState = {
+    user: {
+        name: '',
+    },
     adjectives: ['libre', 'long', 'strong', 'light', 'red'],
     nouns: ['cuba', 'island', 'octoober', 'budwiser', 'desire'],
     tosts: ['Cheers!', 'To absent friends', "Here's to you!",
@@ -16,7 +19,9 @@ export const useStore = create(
         (set)=>({
             ...initialState,
 
-
+            updateUserName: (newName) => set((state) => { state.user.name = newName }),
+            setToArray: (array, newItem) => set((state) => { state[array].push(newItem) }),
+            removeFromArray: (array, item) => set((state) => { state[array] = state[array].filter(i => i !== item) }),
         })
     )
 )
