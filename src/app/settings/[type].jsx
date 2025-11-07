@@ -34,18 +34,18 @@ export default function SettingsTypeScreen() {
 
   return (
     <View style={[styles.screen]}>
-      <Text style={{...TYPOGRAPHY.title, textTransform:'uppercase'}}>{type}:</Text>
+      <Text style={{ ...TYPOGRAPHY.title, textTransform: 'uppercase' }}>{type}:</Text>
 
       <FlatList
         data={items}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderItem}
-        style={{...styles.card, flex:1}}
+        style={{ ...styles.card, flex: 1 }}
       />
 
-      <View style={styles.card}>
+      <View style={[styles.card, { justifyContent: 'flex-start' }]}>
         <TextInput
-          style={[  styles.input, { marginBottom: SPACING.sm } ]}
+          style={[styles.input, { marginBottom: SPACING.sm }]}
           placeholder={`Add new ${type.slice(0, -1)}`}
           value={newItemText}
           onChangeText={setNewItemText} />

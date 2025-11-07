@@ -1,10 +1,12 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createJSONStorage, persist } from 'expo-zustand-persist';
 import { immer } from "zustand/middleware/immer"
 const { create } = require("zustand")
 
 
 const initialState = {
     user: {
-        name: '',
+        name: 'unknown',
     },
     adjectives: ['libre', 'long', 'strong', 'light', 'red'],
     nouns: ['cuba', 'island', 'octoober', 'budwiser', 'desire'],
@@ -15,13 +17,20 @@ const initialState = {
 }
 
 export const useStore = create(
-    immer(
-        (set)=>({
-            ...initialState,
+    persist(
+        immer(
+            (set) => ({
+                ...initialState,
 
-            updateUserName: (newName) => set((state) => { state.user.name = newName }),
-            setToArray: (array, newItem) => set((state) => { state[array].push(newItem) }),
-            removeFromArray: (array, item) => set((state) => { state[array] = state[array].filter(i => i !== item) }),
-        })
-    )
-)
+                updateUserName: (newName) => set((state) => { state.user.name = newName }),
+                setToArray: (array, newItem) => set((state) => { state[array].push(newItem) }),
+                removeFromArray: (array, item) => set((state) => { state[array] = state[array].filter(i => i !== item) }),
+                reset: () => set((state) => { Object.assign(state, initialState)}),
+            })
+        )
+    ), {
+    name: 'drink-game-storage',
+    storage: createJSONStorage(() => AsyncStorage),
+    version: 1,
+    }
+);

@@ -5,7 +5,7 @@ import { BaseStyles, ButtonStyles, FormStyles } from "../styles"
 export const useStyles = () => {
     return useMemo(() => ({
         screen: BaseStyles.container,
-        centeredScreen: [BaseStyles.container, BaseStyles.center],
+        centeredScreen: Object.assign({}, BaseStyles.container, BaseStyles.center),
 
         card: BaseStyles.card,
         cardWithMargin: [BaseStyles.card, { marginBottom: SPACING.md }],
