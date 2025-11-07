@@ -1,5 +1,5 @@
 import { useMemo } from "react"
-import { SPACING } from "../constants"
+import { COLORS, SPACING } from "../constants"
 import { BaseStyles, ButtonStyles, FormStyles } from "../styles"
 
 export const useStyles = () => {
@@ -16,6 +16,10 @@ export const useStyles = () => {
         secondaryButtonText: ButtonStyles.secondaryText,
         outlineButton: ButtonStyles.outline,
         outlineButtonText: ButtonStyles.outlineText,
+        removeButton: ButtonStyles.remove,
+        removeButtonWithMargin: [ButtonStyles.remove, { marginLeft: SPACING.sm }],
+        removeButtonText: ButtonStyles.removeText,
+
         dangerButton: ButtonStyles.danger,
         dangerButtonText: ButtonStyles.dangerText,
 
@@ -23,7 +27,8 @@ export const useStyles = () => {
         label: FormStyles.label,
 
         row: BaseStyles.row,
-        rowBetween: [BaseStyles.row, BaseStyles.spaceBetween],
+        rowBetween: {...BaseStyles.row, ...BaseStyles.spaceBetween},
         center: BaseStyles.center,
+        withBorder: { borderWidth: 1, borderColor: COLORS.border },
     }), [])
 }

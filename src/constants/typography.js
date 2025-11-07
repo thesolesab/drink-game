@@ -6,20 +6,21 @@ export const TYPOGRAPHY = {
         fontWeight: 'bold',
         lineHeight: 32,
         color: COLORS.text,
+        fontFamily: 'WDX-Regular',
     },
     heading: {
         fontSize: 20,
         fontWeight: '600',
         lineHeight: 28,
+        fontFamily: 'WDX-Regular',
+        color: COLORS.text,
+
     },
     body: {
         fontSize: 16,
         fontWeight: '400',
         lineHeight: 24,
-    },
-    caption: {
-        fontSize: 14,
-        lineHeight: 20,
-        color: COLORS.accent,
+        fontFamily: 'WDX-Regular',
+        color: COLORS.text,
     },
 }

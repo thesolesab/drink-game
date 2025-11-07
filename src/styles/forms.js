@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SPACING } from "../constants";
+import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 
 export const FormStyles = StyleSheet.create({
     input: {
@@ -7,8 +7,8 @@ export const FormStyles = StyleSheet.create({
         borderColor: COLORS.border,
         borderRadius: 8,
         padding: SPACING.sm,
-        fontSize: 16,
-        color: COLORS.background,
+        color: COLORS.text,
+        ...TYPOGRAPHY.body,
     },
     inputFocused: {
         borderColor: COLORS.primary,
@@ -17,13 +17,12 @@ export const FormStyles = StyleSheet.create({
         borderColor: COLORS.danger,
     },
     label: {
-        fontSize: 16,
         marginBottom: SPACING.xs,
-        fontWeight: '500',
+        ...TYPOGRAPHY.body,
     },
     errorText: {
         color: COLORS.danger,
-        fontSize: 14,
         marginTop: SPACING.xs,
+        ...TYPOGRAPHY.body,
     },
 });

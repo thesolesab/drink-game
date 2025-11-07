@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SPACING } from "../constants";
+import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 
 
 export const ButtonStyles = StyleSheet.create({
@@ -10,11 +10,11 @@ export const ButtonStyles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
     },
     primaryText: {
         color: COLORS.text,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...TYPOGRAPHY.body,
     },
     secondary: {
         backgroundColor: COLORS.secondary,
@@ -23,13 +23,13 @@ export const ButtonStyles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
     },
     secondaryText: {
         color: COLORS.text,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...TYPOGRAPHY.body,
     },
-    outline:{
+    outline: {
         backgroundColor: 'transparent',
         borderWidth: 2,
         borderColor: COLORS.primary,
@@ -38,24 +38,38 @@ export const ButtonStyles = StyleSheet.create({
         borderRadius: 8,
         alignItems: 'center',
         justifyContent: 'center',
+        cursor: 'pointer',
     },
-    outlineText:{
+    outlineText: {
         color: COLORS.primary,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...TYPOGRAPHY.body,
+    },
+    remove:{
+        backgroundColor: COLORS.danger,
+        width: 30,
+        height: 30,
+        borderRadius: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        cursor: 'pointer',
+    },
+    removeText:{
+        color: COLORS.text,
+        ...TYPOGRAPHY.body,
+        fontSize: 18,
     },
 
-    danger:{
+    danger: {
         backgroundColor: COLORS.danger,
         paddingVertical: SPACING.sm,
         paddingHorizontal: SPACING.lg,
         borderRadius: 8,
         alignItems: 'center',
         jcccontent: 'center',
+        cursor: 'pointer',
     },
-    dangerText:{
+    dangerText: {
         color: COLORS.text,
-        fontSize: 16,
-        fontWeight: 'bold',
+        ...TYPOGRAPHY.body,
     },
 });

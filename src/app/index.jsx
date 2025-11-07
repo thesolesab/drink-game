@@ -1,19 +1,22 @@
-import { useRouter } from "expo-router";
-import { Button, Text, View } from "react-native";
+import { Link } from "expo-router";
+import { Pressable, Text, View } from "react-native";
 import { TYPOGRAPHY } from "../constants";
 import { useStyles } from "../hooks/useStyles";
 import { useStore } from "../store/useStore";
 
 export default function Index() {
-  const router = useRouter();
   const name = useStore((state) => state.user.name);
 
   const styles = useStyles()
-  
+
   return (
     <View style={styles.screen}>
-      <Text style={TYPOGRAPHY.heading}>Welcome {name}!</Text>
-      <Button title="Go to Settings" onPress={() => router.navigate('/settings')} />
+      <Text style={TYPOGRAPHY.heading}>Welcome {name || 'unknown'}!</Text>
+      <Link href="/settings" asChild>
+        <Pressable style={styles.button}>
+          <Text style={styles.buttonText}>go to settings</Text>
+        </Pressable>
+      </Link>
     </View>
   );
 }

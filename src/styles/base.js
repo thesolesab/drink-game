@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { COLORS, SPACING} from "../constants";
+import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 
 export const BaseStyles = StyleSheet.create({
     container: {
@@ -10,17 +10,17 @@ export const BaseStyles = StyleSheet.create({
         justifyContent: 'center',
     },
     text: {
-        fontFamily: 'WDXRegular',
-        fontSize: 18,
-        color: '#fff',
+        ...TYPOGRAPHY.body,
+        color: COLORS.text,
     },
-    card:{
+    card: {
         backgroundColor: COLORS.card,
         borderRadius: 10,
         padding: SPACING.md,
         marginBottom: SPACING.sm,
+        width: '100%',
     },
-    row:{
+    row: {
         flexDirection: 'row',
         alignItems: 'center',
     },
