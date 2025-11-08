@@ -22,7 +22,6 @@ export default function SettingsTab() {
         setShowWarningModal(false);
         useStore.getState().reset();
     }
-    console.log(showWarningModal);
 
     const styles = useStyles();
 

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import { View } from "react-native-web";
+import { Text, View } from "react-native";
 import { TYPOGRAPHY } from "../constants";
-import { Text } from "react-native";
 import { useStore } from "../store/useStore";
 
 
