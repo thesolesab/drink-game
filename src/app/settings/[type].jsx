@@ -1,6 +1,8 @@
 import { useLocalSearchParams } from "expo-router";
 import { useState } from "react";
-import { FlatList, Pressable, Text, TextInput, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
+import StyledButton from "../../components/StyledButton";
+import UniversalList from "../../components/UniversalList";
 import { SPACING, TYPOGRAPHY } from "../../constants";
 import { useStyles } from "../../hooks/useStyles";
 import { useStore } from "../../store/useStore";
@@ -23,24 +25,14 @@ export default function SettingsTypeScreen() {
   };
   const handleRemoveItem = (item) => removeItem(type, item);
 
-  const renderItem = ({ item }) => (
-    <View style={[styles.rowBetween, styles.card, styles.withBorder]}>
-      <Text style={TYPOGRAPHY.body}>{item}</Text>
-      <Pressable onPress={() => handleRemoveItem(item)} style={styles.removeButtonWithMargin}>
-        <Text style={styles.removeButtonText}>x</Text>
-      </Pressable>
-    </View>
-  )
-
   return (
     <View style={[styles.screen]}>
       <Text style={{ ...TYPOGRAPHY.title, textTransform: 'uppercase' }}>{type}:</Text>
 
-      <FlatList
+      <UniversalList
         data={items}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={renderItem}
-        style={{ ...styles.card, flex: 1 }}
+        onRemove={handleRemoveItem}
+        renderLabel={(item) => item}
       />
 
       <View style={[styles.card, { justifyContent: 'flex-start' }]}>
@@ -49,14 +41,11 @@ export default function SettingsTypeScreen() {
           placeholder={`Add new ${type.slice(0, -1)}`}
           value={newItemText}
           onChangeText={setNewItemText} />
-        <Pressable style={styles.button} onPress={handleAddItem}>
-          <Text style={styles.buttonText}>Add</Text>
-        </Pressable>
+        <StyledButton
+          onPress={handleAddItem}
+          text="Add"
+        />
       </View>
-
-      {/* <Pressable style={styles.button} onPress={() =>  router.back() }>
-        <Text style={styles.buttonText}>Go Back</Text>
-      </Pressable> */}
     </View>
   );
 }

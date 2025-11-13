@@ -36,6 +36,20 @@ export default function RootLayout() {
             headerTitleAlign: 'center',
           }}
         />
+        <Stack.Screen
+          name="generator"
+          // header выключаем на корневом уровне — его будет рисовать вложенный Stack в generator/_layout.jsx
+          options={{
+            headerShown: false,
+          }}
+        />
+        <Stack.Screen
+          name="roulete"
+          // header выключаем на корневом уровне — его будет рисовать вложенный Stack в roulete/_layout.jsx
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack>
     </StoreHydration>
   );

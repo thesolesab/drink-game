@@ -1,50 +1,49 @@
-# Welcome to your Expo app 👋
+# drink-game
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Приложение на Expo (React Native + expo-router) для генерации коктейлей и выбора их с помощью рулетки.  
+Проект использует файл‑маршрутизацию в `src/app`, Zustand для стора и `react-native-svg` для рендера колеса.
 
-## Get started
+## Ключевые возможности
+- Создание ингредиентов и генерация коктейлей (Generator).
+- Хранение сгенерированных коктейлей в Zustand (persist).
+- Колесо‑рулетка (Roulete), выбирающее коктейль из стора.
+- Настройки пользователя и списков (Settings).
 
-1. Install dependencies
+## Быстрый старт
+Требования: Node.js, npm/yarn, Expo CLI.
 
-   ```bash
-   npm install
-   ```
+1. Установить зависимости:
+`npm install` или `yarn`
+2. Запустить проект:
+`npx expo start`
+3. Открыть на Android/iOS/веб через Expo DevTools или эмулятор:
+- Android emulator / device
+- iOS simulator (macOS)
+- Web (localhost)
 
-2. Start the app
+Если возникают странности с кешем/шрифтами, перезапустите с очисткой:
+`npx expo start -c`
 
-   ```bash
-   npx expo start
-   ```
+## Важные зависимости
+- `expo-router` — навигация (file-based routing)
+- `zustand` — стор, с persist (AsyncStorage)
+- `react-native-svg` — отрисовка колеса (установить через `expo install react-native-svg`)
+- `@react-native-picker/picker` — нативные селекты (если используются)
 
-In the output, you'll find options to open the app in a
+## Структура проекта (основное)
+- `src/app` — маршруты (index, generator, roulete, settings и т.д.)
+- `src/app/*/_layout.jsx` — лэйауты для стека/вложенной навигации
+- `src/store` — Zustand store (useStore.js)
+- `src/components` — переиспользуемые компоненты (SettingsNavBar, StoreHydration и т.д.)
+- `assets` — шрифты и ресурсы
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Замечания по навигации
+- Для корректной истории и отображения кнопки "назад" используются вложенные Stack в `generator/_layout.jsx` и `roulete/_layout.jsx`.  
+- В `src/app/_layout.jsx` для экранов, где есть вложенный Stack, рекомендуется выключать `headerShown` на корневом уровне, чтобы не дублировался заголовок.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## Разработка и вклад
+- Код размещён в `src`. Для внесения исправлений — открывать соответствующий маршрут в `src/app`.
+- Перед созданием pull request убедиться, что навигация и стор работают на устройстве/эмуляторе.
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Лицензия
+MIT — содержимое проекта можно использовать и изменять.

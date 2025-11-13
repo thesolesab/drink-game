@@ -20,6 +20,15 @@ export const BaseStyles = StyleSheet.create({
         marginBottom: SPACING.sm,
         width: '100%',
     },
+    nav: {
+        display: 'flex',
+        padding: 10,
+        gap: SPACING.sm,
+        backgroundColor: COLORS.background,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        flexWrap: 'wrap'
+    },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
@@ -31,4 +40,5 @@ export const BaseStyles = StyleSheet.create({
     spaceBetween: {
         justifyContent: 'space-between',
     },
+
 });

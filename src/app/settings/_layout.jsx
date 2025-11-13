@@ -1,24 +1,27 @@
-import { router, Slot } from 'expo-router';
+import { Slot, usePathname, useRouter } from 'expo-router';
 import SettingsNavBar from '../../components/SettingsNavBar';
-import { useState } from 'react';
 
 export default function Layout() {
-  const [currentPage, setCurrentPage] = useState('main');
+  const router = useRouter();
+  const pathname = usePathname();
+
+  // currentPage из пути: /settings/<type>
+  const parts = pathname?.split('/') || [];
+  const currentPage = parts[2] || 'main';
 
   const handleNavigate = (pageId) => {
-    // Navigate to the selected settings page
     if (pageId === 'main') {
       router.push('/settings');
-    } else{
+    } else {
       router.push(`/settings/${pageId}`);
     }
-    setCurrentPage(pageId);
   }
 
   return (
     <>
-      <Slot />
+      {/* Навбар сверху — он получает актуальный currentPage из пути */}
       <SettingsNavBar currentPage={currentPage} onNavigate={handleNavigate} />
+      <Slot />
     </>
   )
 }

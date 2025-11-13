@@ -26,6 +26,8 @@ export const useStyles = () => {
         input: FormStyles.input,
         label: FormStyles.label,
 
+        navBar: BaseStyles.nav,
+
         row: BaseStyles.row,
         rowBetween: {...BaseStyles.row, ...BaseStyles.spaceBetween},
         center: BaseStyles.center,

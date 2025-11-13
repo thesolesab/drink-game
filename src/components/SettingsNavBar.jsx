@@ -1,7 +1,8 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Pressable, Text, View } from "react-native";
-import { COLORS, SPACING } from "../constants";
+import { View } from "react-native";
+import { COLORS } from "../constants";
 import { useStyles } from "../hooks/useStyles";
+import StyledButton from "./StyledButton";
 
 const pages = [
     { id: 'main', title: 'Main', icon: (currentPage, id) => (currentPage === id ? 'home-sharp' : 'home-outline') },
@@ -16,28 +17,23 @@ export default function SettingsNavBar({ currentPage, onNavigate }) {
     const styles = useStyles();
 
     return (
-        <View style={{ display: 'flex', padding: 10, gap: SPACING.sm, backgroundColor: COLORS.background, flexDirection: 'row', justifyContent: 'center' }}>
-            {pages.map((page) => (
-                <Pressable
-                    key={page.id}
-                    onPress={() => onNavigate(page.id)}
-                >
-                    <Ionicons name={page.icon(currentPage, page.id)} size={20} color={COLORS.text} />
-                    <Text style={styles.buttonText}>{page.title}</Text>
-                </Pressable>
-                // <Button
-                //     key={page.id}
-                //     title="dd"
-                //     onClick={() => onNavigate(page.id)}
-                //     style={{
-                //         ...styles.button,
-                //         ...(currentPage === page.id ? styles.dangerButton : {}),
-                //         display: 'flex', flexDirection: 'row', alignItems: 'center', gap: SPACING.sm,
-                //     }}
-                // >
-
-                // </Button>
-            ))}
+        <View style={[styles.navBar, { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 8 }]}>
+            {pages.map((page) => {
+                const active = currentPage === page.id;
+                return (
+                    <StyledButton
+                        key={page.id}
+                        onPress={() => onNavigate(page.id)}
+                        text={page.title}
+                        icon={<Ionicons name={page.icon(currentPage, page.id)} size={18} color={active ? COLORS.onPrimary || '#fff' : COLORS.text} />}
+                        style={[
+                            active ? { backgroundColor: COLORS.primary || '#0a84ff' } : {},
+                            { flexDirection: 'column', alignItems: 'center', paddingVertical: 8, paddingHorizontal: 12 }
+                        ]}
+                        activeOpacity={0.7}
+                    />
+                );
+            })}
         </View>
     );
 }

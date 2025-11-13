@@ -17,7 +17,7 @@ const initialState = {
     drinks: {
         store: [],
         settings: {},
-        ingredients: new Map()
+        ingredients: {}
     }
 }
 
@@ -31,10 +31,11 @@ export const useStore = create(
                     updateUserName: (newName) => set((state) => { state.user.name = newName }),
                     setToArray: (array, newItem) => set((state) => { state[array].push(newItem) }),
                     removeFromArray: (array, item) => set((state) => { state[array] = state[array].filter(i => i !== item) }),
-                    reset: () => set((state) => { Object.assign(state, initialState) }),
+                    reset: () => set(() => initialState),
 
-                    addIngredient: (newIngredient) => set((state) => { state.drinks.ingredients.set(newIngredient.name, newIngredient) }),
-                    addDrink: (newDrinks) => set((state) => { state.drinks.store.push(newDrinks) }),
+                    addIngredient: (newIngredient) => set((state) => { state.drinks.ingredients[newIngredient.name] = newIngredient }),
+                    removeIngredient: (ingredientName) => set((state) => { delete state.drinks.ingredients[ingredientName] }),
+                    addDrink: (newDrink) => set((state) => { state.drinks.store.push(newDrink) }),
                 }
             )
         ),

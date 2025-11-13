@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>drink-roulete</title>
+</head>
+<body>
+    <div class="container">
+        <div class="canvas-container">
+            <button id="spin" disabled>spin</button>
+            <span class="arrow"></span>    
+            <div class="wheel"></div>
+        </div>
+        <div class="information">
+            <div class="count">
+                0
+                <span>spins</span>
+            </div>
+            <div class="timer">
+                <input type="text" name="duration" min="1" id="duration" value="5" pattern="[0-9]*">
+                <span>sec</span>
+            </div>
+        </div>
+        <div class="todo-list">
+            <textarea name="todos" id="todos" readonly placeholder="your cocktails would be here"></textarea>
+            <div class="todo"><input type="text" id="newTodo"><button class="add">add</button><button class="clear">clear</button></div>
+            <div class="btns">
+                <button onclick="document.getElementById('importInput').click()">import cocktails</button>
+                <input type="file" accept=".json" id="importInput" style="display: none;">
+                <button id="export">export cocktails</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
