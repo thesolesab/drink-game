@@ -22,6 +22,8 @@ export const useStyles = () => {
 
         dangerButton: ButtonStyles.danger,
         dangerButtonText: ButtonStyles.dangerText,
+        succesButton: ButtonStyles.succes,
+        succesButtonText: ButtonStyles.succesText,
 
         input: FormStyles.input,
         label: FormStyles.label,

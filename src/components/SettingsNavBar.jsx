@@ -6,7 +6,7 @@ import StyledButton from "./StyledButton";
 
 const pages = [
     { id: 'main', title: 'Main', icon: (currentPage, id) => (currentPage === id ? 'home-sharp' : 'home-outline') },
-    { id: 'tosts', title: 'Toasts', icon: (currentPage, id) => (currentPage === id ? 'notifications-sharp' : 'notifications-outline') },
+    { id: 'toasts', title: 'Toasts', icon: (currentPage, id) => (currentPage === id ? 'notifications-sharp' : 'notifications-outline') },
     { id: 'nouns', title: 'Nouns', icon: (currentPage, id) => (currentPage === id ? 'book-sharp' : 'book-outline') },
     { id: 'adjectives', title: 'Adjectives', icon: (currentPage, id) => (currentPage === id ? 'book-sharp' : 'book-outline') },
 ]

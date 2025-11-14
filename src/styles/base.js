@@ -17,7 +17,6 @@ export const BaseStyles = StyleSheet.create({
         backgroundColor: COLORS.card,
         borderRadius: 10,
         padding: SPACING.md,
-        marginBottom: SPACING.sm,
         width: '100%',
     },
     nav: {

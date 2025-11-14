@@ -1,30 +1,99 @@
-import { Button, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 import { useStyles } from "../hooks/useStyles";
-import { TYPOGRAPHY } from "../constants";
+import StyledButton from "./StyledButton";
 
 
-export default function Modal({onCloseModal}) {
+export default function Modal({
+    type = "warning", // "warning" | "success" | "error" | "info"
+    headerText = "Alert",
+    warningText = "",
+    headerTextColor = null,
+    warningTextColor = null,
+    handleYes = () => { },
+    handleNo = () => { },
+    handleClose = () => { },
+}) {
 
     const styles = useStyles();
+
+    // определяем кнопки и цвета по типу
+    const config = {
+        warning: {
+            buttons: 'dual', // Yes/No
+            defaultWarningColor: COLORS.warning,
+        },
+        success: {
+            buttons: 'single', // Close
+            defaultWarningColor: COLORS.success,
+        },
+        error: {
+            buttons: 'single', // Close
+            defaultWarningColor: COLORS.danger ,
+        },
+        info: {
+            buttons: 'single', // Close
+            defaultWarningColor: COLORS.info,
+        },
+    };
+
+    const currentConfig = config[type] || config.info;
+    const isSingleButton = currentConfig.buttons === 'single';
+    const finalWarningColor = warningTextColor || currentConfig.defaultWarningColor;
+    const finalHeaderColor = headerTextColor || COLORS.text;
+
     return (
-        <View
+        <Pressable
             style={{
                 position: 'absolute',
-                bottom: 80,
-                ...styles.centeredScreen,
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
             }}
+            onPress={handleClose} // закрытие по нажатию фона
         >
-            <Text style={TYPOGRAPHY.body}>Reset to default?</Text>
-            <View
+            <Pressable
                 style={{
+                    backgroundColor: COLORS.background ,
+                    borderRadius: 12,
+                    padding: SPACING.md,
+                    width: '80%',
                     alignItems: 'center',
+                    gap: SPACING.md,
+                }}
+                onPress={(e) => e.stopPropagation()} // предотвращаем пропагацию клика на фон
+            >
+                <Text style={[TYPOGRAPHY.title, { color: finalHeaderColor }]}>{headerText}</Text>
+                {warningText && (
+                    <Text style={[TYPOGRAPHY.body, { color: finalWarningColor }]}>
+                        {warningText}
+                    </Text>
+                )}
+
+                <View style={{
                     flexDirection: 'row',
                     gap: SPACING.sm,
-                }}
-            >
-                <Button title="Yes" onPress={handleReset} />
-                <Button title="No" onPress={onCloseModal} />
-            </View>
-        </View>
-    )
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}>
+                    {isSingleButton ? (
+                        <StyledButton onPress={handleClose} text="Close" />
+                    ) : (
+                        <>
+                            <StyledButton onPress={handleYes} text="Yes" />
+                            <StyledButton
+                                onPress={handleNo || handleClose}
+                                text="No"
+                                style={{ backgroundColor: COLORS.secondary }}
+                            />
+                        </>
+                    )}
+                </View>
+            </Pressable>
+        </Pressable>
+    );
 }
