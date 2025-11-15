@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
+import { Animated, Easing, Pressable, Text, useWindowDimensions, View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
 import CocktailCard from "../../components/CocktailCard";
 import Modal from "../../components/Modal";
@@ -72,7 +72,7 @@ export default function RouletteScreen() {
       </>
     );
     return (
-      <>
+      <Pressable onPress={spin} style={{ alignItems: "center" }}>
         {/* стрелка */}
         <View style={{
           width: 0, height: 0, borderLeftWidth: 12, borderRightWidth: 12,
@@ -109,18 +109,18 @@ export default function RouletteScreen() {
                   </G>
                 );
               })}
-              <Circle cx={cx} cy={cy} r={radius * 0.14} fill="#fff" />
+              <Circle cx={cx} cy={cy} r={radius * 0.04} fill="#fff" />
             </G>
           </Svg>
         </Animated.View>
 
-        <StyledButton
+        {/* <StyledButton
           onPress={spin}
           disabled={items.length === 0}
           style={{ opacity: items.length === 0 ? 0.5 : 1 }}
           text="Spin"
-        />
-      </>
+        /> */}
+      </Pressable>
     )
   })();
 

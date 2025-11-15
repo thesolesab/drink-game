@@ -1,9 +1,11 @@
 import { Picker } from "@react-native-picker/picker";
 import { useRef, useState } from "react";
 import { Switch, Text, TextInput, View } from "react-native";
-import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
+import { SPACING, TYPOGRAPHY } from "../constants";
+import useMessage from "../hooks/useMessage";
 import { useStyles } from "../hooks/useStyles";
 import { useStore } from "../store/useStore";
+import Message from "./Message";
 import StyledButton from "./StyledButton";
 
 export default function AddIngredientForm({ closeModal }) {
@@ -16,10 +18,12 @@ export default function AddIngredientForm({ closeModal }) {
     const [error, setError] = useState(null);
     const nameInputRef = useRef(null);
     const amountInputRef = useRef(null);
+    const { message, showSuccess, showError, hideMessage } = useMessage()
 
     const handleAdd = () => {
         if (!name.trim() || !amount.trim()) {
             setError("Please fill in all fields.");
+            showError("Please fill in all fields.")
 
             if (!nameInputRef?.current.value) {
                 nameInputRef.current.focus();
@@ -36,6 +40,7 @@ export default function AddIngredientForm({ closeModal }) {
             alco: !!alco,
         };
 
+        showSuccess("Ингредиент успешно добавлен!")
         addIngredient(newIngredient);
         // очистить поля
         setName("");
@@ -45,18 +50,19 @@ export default function AddIngredientForm({ closeModal }) {
     return (
         <>
             <Text style={TYPOGRAPHY.heading}>Add ingredient</Text>
-            {error && <Text style={[TYPOGRAPHY.title, { color: COLORS.danger }]}>{error}</Text>}
+            <Message message={message} onClose={hideMessage} />
+
+            {/* Первая строка: название ингредиента и переключатель Alco */}
             <View style={{
-                display: 'grid',
-                gridTemplateColumns: '4fr 1fr',
+                flexDirection: 'row',
                 width: '100%',
-                gap: SPACING.sm,
                 alignItems: 'center',
-                justifyItems: 'center'
+                marginBottom: SPACING.sm,
+                gap: SPACING.sm,
             }}>
                 <TextInput
                     ref={nameInputRef}
-                    style={[styles.input, { marginBottom: SPACING.sm }]}
+                    style={[styles.input, { flex: 4, marginBottom: 0 }]}
                     placeholder="ingredient"
                     value={name}
                     onChangeText={(text) => {
@@ -70,14 +76,23 @@ export default function AddIngredientForm({ closeModal }) {
                         }
                     }}
                 />
-                <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 8 }}>
+                <View style={{ flex: 1, flexDirection: "row", alignItems: "center", justifyContent: "center", maxWidth: '10%' }}>
                     <Text style={[styles.buttonText, { marginRight: SPACING.sm }]}>Alco</Text>
                     <Switch value={alco} onValueChange={setAlco} />
                 </View>
+            </View>
 
+            {/* Вторая строка: количество и единица измерения */}
+            <View style={{
+                flexDirection: 'row',
+                width: '100%',
+                alignItems: 'center',
+                marginBottom: SPACING.sm,
+                gap: SPACING.sm,
+            }}>
                 <TextInput
                     ref={amountInputRef}
-                    style={styles.input}
+                    style={[styles.input, { flex: 4, marginBottom: 0 }]}
                     placeholder="amount"
                     value={amount}
                     onChangeText={(text) => {
@@ -86,11 +101,10 @@ export default function AddIngredientForm({ closeModal }) {
                     }}
                     keyboardType="numeric"
                 />
-
                 <Picker
                     selectedValue={unit}
                     onValueChange={(v) => setUnit(v)}
-                    style={[styles.input, { marginVertical: SPACING.sm, color: 'black', width: 'auto' }]}
+                    style={[styles.input, { flex: 1, marginVertical: 0, color: 'black', maxWidth: '10%' }]}
                 >
                     <Picker.Item label="ml" value="ml" />
                     <Picker.Item label="liter" value="l" />
@@ -101,11 +115,7 @@ export default function AddIngredientForm({ closeModal }) {
             </View>
             <View style={styles.rowBetween}>
                 <StyledButton
-                    onPress={() =>
-                        handleAdd
-                            ? handleAdd({ name, amount, unit, alco })
-                            : null
-                    }
+                    onPress={handleAdd}
                     text="Add ingredient"
                 />
                 <StyledButton

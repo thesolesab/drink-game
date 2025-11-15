@@ -28,13 +28,27 @@ export default function useCocktailGenerator() {
     let attempts = 0;
     while (currentTotal < totalNeeded - 1e-6 && attempts < 200) {
       attempts++;
+      // Если еще не достигнут максимум ингредиентов, выбираем из всех доступных
+      // Если достигнут максимум, выбираем только из уже добавленных
       const pool = Object.values(composition).length < maxIngredients ? poolBase : Object.values(composition);
       const candidate = pool[Math.floor(Math.random() * pool.length)];
       if (!candidate) break;
 
       const name = candidate.name;
       const availML = toML(available[name].amount, available[name].unit);
-      if (availML <= 0) continue;
+      if (availML <= 0) {
+        // Если ингредиент закончился и мы достигли максимума ингредиентов,
+        // попробуем найти другой доступный ингредиент из poolBase
+        if (Object.values(composition).length >= maxIngredients) {
+          const alternative = poolBase.find((p) => {
+            const pML = toML(available[p.name].amount, available[p.name].unit);
+            return pML > 0 && !composition[p.name];
+          });
+          if (!alternative) break;
+          continue;
+        }
+        continue;
+      }
 
       const remainingNeeded = totalNeeded - currentTotal;
       const remainingAllowedAlcoholML = Math.max(0, alcoholLimit - currentAlcoholML);
@@ -88,7 +102,7 @@ export default function useCocktailGenerator() {
       targetVolumeML: totalNeeded,
       composition: result,
     };
-  }, []);
+  }, [getState]);
 
   // Генерирует набор коктейлей по настройкам из стора
   const generateFromStore = useCallback(async () => {
@@ -104,9 +118,9 @@ export default function useCocktailGenerator() {
       if (opts && opts.make) {
         orders.push({
           type,
-          volume: opts.volume || 50,
-          quantity: opts.quantity || 1,
-          maxIngredients: opts.maxIngredients || 4,
+          volume: Number(opts.volume) || 50,
+          quantity: Number(opts.quantity) || 1,
+          maxIngredients: Number(opts.maxIngredients) || 4,
         });
       }
     }
@@ -118,25 +132,40 @@ export default function useCocktailGenerator() {
     const generated = [];
 
     for (const order of orders) {
-      for (let i = 0; i < (order.quantity || 1); i++) {
+      const targetQuantity = order.quantity || 1;
+      let generatedCount = 0;
+      console.log(`Generating ${targetQuantity} ${order.type}(s) with volume ${order.volume}ml`);
+
+      for (let i = 0; i < targetQuantity; i++) {
         // каждый раз генерируем с текущим available (постепенно его истощаем)
         const cocktail = generateCocktail(available, order.type, order.volume, order.maxIngredients);
         if (!cocktail) {
-          console.warn(`Could not generate ${order.type} #${i + 1} — not enough ingredients`);
-          break;
+          console.warn(`Could not generate ${order.type} #${i + 1}/${targetQuantity} — not enough ingredients`);
+          // Продолжаем попытки для остальных коктейлей, но пропускаем этот
+          continue;
         }
 
-        // обновляем available, вычитая использованные ингредиенты
+        // Обновляем available, вычитая использованные ингредиенты
+        // (generateCocktail работает с копией, поэтому нужно обновить основной available)
         cocktail.composition.forEach((c) => {
           const avail = available[c.name];
           if (avail) {
-            const remainML = Math.max(0, toML(avail.amount, avail.unit) - toML(c.amount, c.unit));
+            const usedML = toML(c.amount, c.unit);
+            const currentML = toML(avail.amount, avail.unit);
+            const remainML = Math.max(0, currentML - usedML);
             avail.amount = fromML(remainML, avail.unit);
+            // Если ингредиент закончился, можно установить amount в 0
+            if (remainML < 1e-6) {
+              avail.amount = 0;
+            }
           }
         });
 
         generated.push(cocktail);
+        generatedCount++;
       }
+
+      console.log(`Successfully generated ${generatedCount}/${targetQuantity} ${order.type}(s)`);
     }
 
     setState((st) => ({ drinks: { ...st.drinks, store: generated } }));

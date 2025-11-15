@@ -1,5 +1,5 @@
 import { Text, View } from "react-native";
-import { SPACING } from "../constants";
+import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 import { toML } from "../hooks/useCocktailGenerator";
 import { useStyles } from "../hooks/useStyles";
 
@@ -7,14 +7,28 @@ export default function CocktailCard({ item }) {
     const styles = useStyles()
     return (
         <View style={[styles.card, { marginBottom: SPACING.sm }]}>
-            <Text style={{ fontSize: 18, fontWeight: "700" }}>{item.title.toUpperCase()}</Text>
-            <Text style={{ color: "#666", marginBottom: 6 }}>{item.descr}</Text>
-            {item.composition?.map((c, idx) => (
-                <Text key={idx} style={styles.buttonText}>
-                    {renderCompositionItem(c)}
-                </Text>
-            ))}
-            <Text style={{ marginTop: 6, color: "#444" }}>Total ML: {item.targetVolumeML}</Text>
+            <View style={[styles.rowBetween, { width: '100%' }]}>
+                <View style={{ flex: 1, flexShrink: 1 }}>
+                    <Text style={TYPOGRAPHY.heading}>{item.title.toUpperCase()}</Text>
+                    <Text
+                        style={{
+                            color: COLORS.textSecondary,
+                            marginBottom: SPACING.sm,
+                        }}
+                        numberOfLines={3}
+                        ellipsizeMode="tail"
+                    >
+                        {item.descr}
+                    </Text>
+                    {item.composition?.map((c, idx) => (
+                        <Text key={idx} style={styles.buttonText}>
+                            {renderCompositionItem(c)}
+                        </Text>
+                    ))}
+                    <Text style={{ marginTop: 6, color: COLORS.textSecondary }}>Total ML: {item.targetVolumeML} ml</Text>
+                </View>
+                <Text style={{ color: COLORS.textSecondary, transform: [{ rotate: "90deg" }] }}>{item.type}</Text>
+            </View>
         </View>
     );
 }

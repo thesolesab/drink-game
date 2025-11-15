@@ -97,29 +97,22 @@ export default function SettingsTab() {
             </View>
 
             <ScrollView style={{ flexGrow: 0, width: '100%' }} showsVerticalScrollIndicator={false}>
-                <DrinkSettingsCard
-                    title="Cocktails"
-                    make={settings.cocktail.make}
-                    onMakeChange={(val) => updateSetting('cocktail', 'make', val)}
-                    maxIngredients={settings.cocktail.maxIngredients}
-                    onMaxIngredientsChange={(val) => updateSetting('cocktail', 'maxIngredients', val)}
-                    volume={settings.cocktail.volume}
-                    onVolumeChange={(val) => updateSetting('cocktail', 'volume', val)}
-                    quantity={settings.cocktail.quantity}
-                    onQuantityChange={(val) => updateSetting('cocktail', 'quantity', val)}
-                />
-                <View style={{ height: SPACING.sm }} />
-                <DrinkSettingsCard
-                    title="Shots"
-                    make={settings.shot.make}
-                    onMakeChange={(val) => updateSetting('shot', 'make', val)}
-                    maxIngredients={settings.shot.maxIngredients}
-                    onMaxIngredientsChange={(val) => updateSetting('shot', 'maxIngredients', val)}
-                    volume={settings.shot.volume}
-                    onVolumeChange={(val) => updateSetting('shot', 'volume', val)}
-                    quantity={settings.shot.quantity}
-                    onQuantityChange={(val) => updateSetting('shot', 'quantity', val)}
-                />
+                {(['cocktail', 'shot']).map((type, index) => (
+                    <View key={type}>
+                        {index > 0 && <View style={{ height: SPACING.sm }} />}
+                        <DrinkSettingsCard
+                            title={type === 'cocktail' ? 'Cocktails' : 'Shots'}
+                            make={settings[type].make}
+                            onMakeChange={(val) => updateSetting(type, 'make', val)}
+                            maxIngredients={settings[type].maxIngredients}
+                            onMaxIngredientsChange={(val) => updateSetting(type, 'maxIngredients', val)}
+                            volume={settings[type].volume}
+                            onVolumeChange={(val) => updateSetting(type, 'volume', val)}
+                            quantity={settings[type].quantity}
+                            onQuantityChange={(val) => updateSetting(type, 'quantity', val)}
+                        />
+                    </View>
+                ))}
             </ScrollView>
 
             <View style={[styles.rowBetween, { gap: SPACING.sm }]}>

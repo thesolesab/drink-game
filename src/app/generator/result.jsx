@@ -39,7 +39,7 @@ export default function ResultScreen() {
 
   return (
     <View style={[styles.screen, { padding: SPACING.md }]}>
-      <Text style={TYPOGRAPHY.heading}>Generated cocktails</Text>
+      <Text style={TYPOGRAPHY.heading}>Generated {drinks.length} cocktails</Text>
 
       <FlatList
         data={drinks}
@@ -51,7 +51,7 @@ export default function ResultScreen() {
       />
 
       <View style={{ flexDirection: "row", gap: SPACING.sm, marginTop: SPACING.md }}>
-        <StyledButton onPress={() => router.back()} text="Back" style={{ flex: 1 }} />
+        <StyledButton onPress={() => router.push("/generator")} text="Back" style={{ flex: 1 }} />
         <StyledButton onPress={onGenerate} disabled={loading} text={loading ? "Generating..." : "Generate"} style={{ flex: 1 }} />
         <StyledButton onPress={onClear} text="Clear" style={{ flex: 1, backgroundColor: "#aaa" }} />
         <StyledButton onPress={() => router.push("../roulette")} text="Go to Roulette" />
