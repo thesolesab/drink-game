@@ -22,13 +22,13 @@ const initialState = {
                 make: true,
                 maxIngredients: 4,
                 volume: 300,
-                quantity: 1
+                quantity: 10
             },
             shot: {
-                make: false,
+                make: true,
                 maxIngredients: 1,
                 volume: 70,
-                quantity: 1
+                quantity: 5
             }
         },
         ingredients: {}
