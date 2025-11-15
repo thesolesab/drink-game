@@ -22,9 +22,9 @@ export default function Index() {
           <Text style={styles.buttonText}>go to Generator</Text>
         </Pressable>
       </Link>
-      <Link href="/roulete" asChild>
+      <Link href="/roulette" asChild>
         <Pressable style={styles.button}>
-          <Text style={styles.buttonText}>go to Roulete</Text>
+          <Text style={styles.buttonText}>go to Roulette</Text>
         </Pressable>
       </Link>
     </View>

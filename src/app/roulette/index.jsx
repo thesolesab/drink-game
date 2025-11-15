@@ -1,56 +1,34 @@
-<<<<<<< Updated upstream
 import { useRef, useState } from "react";
 import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
 import CocktailCard from "../../components/CocktailCard";
 import Modal from "../../components/Modal";
 import StyledButton from "../../components/StyledButton";
-import { COLORS, SPACING } from "../../constants";
-import useModal from "../../hooks/useModal";
-import useRouleteDrawer from "../../hooks/useRouleteDrawer";
-=======
-import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
-import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
-import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
-import Modal from "../../components/Modal";
-import StyledButton from "../../components/StyledButton";
 import { COLORS, SPACING, TYPOGRAPHY } from "../../constants";
 import useModal from "../../hooks/useModal";
->>>>>>> Stashed changes
+import useRouletteDrawer from "../../hooks/useRouletteDrawer";
 import { useStyles } from "../../hooks/useStyles";
 import { useStore } from "../../store/useStore";
 
 
-export default function RuleteScreen() {
+export default function RouletteScreen() {
   const styles = useStyles();
   const { width, height } = useWindowDimensions();
   const size = Math.min(width * 0.8, height * 0.8);
   const radius = size / 2;
   const cx = size / 2;
   const cy = size / 2;
-  const router = useRouter();
   const { modal, openModal, closeModal } = useModal()
   const [winner, setWinner] = useState(null)
 
-<<<<<<< Updated upstream
-  const { modal, openModal, closeModal } = useModal();
-  const { polarToCartesian, randomLightColor, describeArc } = useRouleteDrawer()
-=======
-  // const itemsRaw = useStore((s) => s.drinks.store) || [];
-  const itemsRaw = useStore((s) => s.drinks.store) || [];
-  const [items, setItems] = useState(itemsRaw)
->>>>>>> Stashed changes
+  const { polarToCartesian, randomLightColor, describeArc } = useRouletteDrawer()
 
-  // const itemsRaw = useStore((s) => s.drinks.store) || [];
   const duration = useStore((s) => s.user.duration) || 3;
   const itemsRaw = useStore((s) => s.drinks.store) || [];
   const [items, setItems] = useState(itemsRaw)
 
   const rotation = useRef(new Animated.Value(0)).current;
   const spinning = useRef(false);
-
-  let modalView = null
 
   const spin = () => {
     if (spinning.current || items.length === 0) return;
@@ -73,33 +51,10 @@ export default function RuleteScreen() {
       const won = Math.floor(final / sliceAngle);
       spinning.current = false;
       rotation.setValue(final); // держим значение в 0..360
-<<<<<<< Updated upstream
-
       const winner = items[won]
-
-      openModal('info', {
-        headerText: 'Win Win Win',
-      })
-      
-      modalView = <Modal
-        type={modal.type}
-        headerText={modal.headerText}
-        warningText={modal.warningText}
-        handleYes={() => {
-          modal.onYes?.();
-          closeModal();
-        }}
-        handleNo={closeModal}
-        handleClose={closeModal}
-      >
-        <CocktailCard item={winner} />
-      </Modal>
-
+      setWinner(winner)
+      openModal()
       setItems(() => items.filter(i => i.id !== winner.id))
-=======
-      setWinner(items[won])
-      setItems(prev => prev.filter((_, idx) => idx !== won))
->>>>>>> Stashed changes
     });
   };
   const rotate = rotation.interpolate({
@@ -109,17 +64,13 @@ export default function RuleteScreen() {
   const sliceAngle = items.length > 0 ? 360 / items.length : 360;
 
   const renderWheel = (() => {
-<<<<<<< Updated upstream
     if (items.length === 0) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Нет сгенерированных коктейлей в сторе</Text>;
-    if (items.length === 1) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Only one cocktail: </Text>;
-=======
-    if (items.length === 0) return (
-      <View>
-        <Text style={[TYPOGRAPHY.heading, { color: COLORS.danger }]}>Нет сгенерированных коктейлей в сторе</Text>
-        <StyledButton onPress={() => router.push('/generator')} text="Go to Generator" />
-      </View>
-    )
->>>>>>> Stashed changes
+    if (items.length === 1) return (
+      <>
+        <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Last cocktail: </Text>
+        <CocktailCard item={items[0]} />
+      </>
+    );
     return (
       <>
         {/* стрелка */}
@@ -178,17 +129,12 @@ export default function RuleteScreen() {
       <View style={{ alignItems: "center" }}>
         {renderWheel}
       </View>
-<<<<<<< Updated upstream
-      {modal && modalView}
-=======
       {modal &&
-        <Modal
-          handleClose={closeModal}
-        >
-
-        </Modal>
-      }
->>>>>>> Stashed changes
+        <Modal handleClose={closeModal}>
+          <Text style={TYPOGRAPHY.heading}>Win!Win!Win!</Text>
+          <CocktailCard item={winner} />
+          <StyledButton text='Close' onPress={closeModal} />
+        </Modal>}
     </View>
   );
 }

@@ -2,7 +2,7 @@ import { useCallback } from "react";
 import { useStore } from "../store/useStore";
 
 const UNIT_TO_ML = { ml: 1, l: 1000, g: 1, kg: 1000, pcs: 30 };
-const toML = (amount, unit) => amount * (UNIT_TO_ML[unit] || 1);
+export const toML = (amount, unit) => amount * (UNIT_TO_ML[unit] || 1);
 const fromML = (ml, unit) => ml / (UNIT_TO_ML[unit] || 1);
 
 export default function useCocktailGenerator() {
@@ -72,13 +72,13 @@ export default function useCocktailGenerator() {
       alco: !!c.alco,
     }));
 
-    const generator = getState().adjectives ? new (function Generator() {
+    const generator = new (function Generator() {
       this.adjectives = getState().adjectives || ['libre', 'long'];
       this.nouns = getState().nouns || ['cuba', 'island'];
       this.tost = getState().tosts || ['Cheers'];
       this.generateName = () => `${this.adjectives[Math.floor(Math.random() * this.adjectives.length)]} ${this.nouns[Math.floor(Math.random() * this.nouns.length)]}`;
       this.generateTost = () => this.tost[Math.floor(Math.random() * this.tost.length)];
-    })() : { generateName: () => `Coctail ${uid()}`, generateTost: () => '' };
+    })()
 
     return {
       title: generator.generateName(),

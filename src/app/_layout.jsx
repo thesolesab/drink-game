@@ -44,8 +44,8 @@ export default function RootLayout() {
           }}
         />
         <Stack.Screen
-          name="roulete"
-          // header выключаем на корневом уровне — его будет рисовать вложенный Stack в roulete/_layout.jsx
+          name="roulette"
+          // header выключаем на корневом уровне — его будет рисовать вложенный Stack в roulette/_layout.jsx
           options={{
             headerShown: false,
           }}

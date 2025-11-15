@@ -80,29 +80,6 @@ export default function Modal({
                             </Text>
                         ) : null}
 
-<<<<<<< Updated upstream
-                {children}
-
-                <View style={{
-                    flexDirection: 'row',
-                    gap: SPACING.sm,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                }}>
-                    {isSingleButton ? (
-                        <StyledButton onPress={handleClose} text="Close" />
-                    ) : (
-                        <>
-                            <StyledButton onPress={handleYes} text="Yes" />
-                            <StyledButton
-                                onPress={handleNo || handleClose}
-                                text="No"
-                                style={{ backgroundColor: COLORS.secondary }}
-                            />
-                        </>
-                    )}
-                </View>
-=======
                         <View style={{
                             flexDirection: 'row',
                             gap: SPACING.sm,
@@ -124,7 +101,6 @@ export default function Modal({
                         </View>
                     </>
                 )}
->>>>>>> Stashed changes
             </Pressable>
         </Pressable>
     );
