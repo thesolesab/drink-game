@@ -1,43 +1,15 @@
-import { useRef } from "react";
-import { Alert, Animated, Easing, Text, useWindowDimensions, View } from "react-native";
+import { useRef, useState } from "react";
+import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
+import CocktailCard from "../../components/CocktailCard";
+import Modal from "../../components/Modal";
 import StyledButton from "../../components/StyledButton";
 import { COLORS, SPACING } from "../../constants";
+import useModal from "../../hooks/useModal";
+import useRouleteDrawer from "../../hooks/useRouleteDrawer";
 import { useStyles } from "../../hooks/useStyles";
 import { useStore } from "../../store/useStore";
 
-/**
- * Колесо рулетки — использует drinks.store из стора.
- * Каждый элемент ожидается как объект или строка; метка берётся из item.name || item.title || item.
- */
-
-function polarToCartesian(cx, cy, radius, angleDeg) {
-  const angleRad = ((angleDeg - 90) * Math.PI) / 180.0;
-  return {
-    x: cx + radius * Math.cos(angleRad),
-    y: cy + radius * Math.sin(angleRad),
-  };
-}
-
-function describeArc(cx, cy, radius, startAngle, endAngle) {
-  const start = polarToCartesian(cx, cy, radius, endAngle);
-  const end = polarToCartesian(cx, cy, radius, startAngle);
-  const largeArcFlag = endAngle - startAngle <= 180 ? "0" : "1";
-  return [
-    "M", cx, cy,
-    "L", start.x, start.y,
-    "A", radius, radius, 0, largeArcFlag, 0, end.x, end.y,
-    "Z"
-  ].join(" ");
-}
-
-function randomLightColor(seed) {
-  // детерминированный-ish цвет по индексу seed для стабильности
-  const h = Math.floor(((seed * 47) % 360));
-  const s = 55;
-  const l = 70;
-  return `hsl(${h} ${s}% ${l}%)`;
-}
 
 export default function RuleteScreen() {
   const styles = useStyles();
@@ -47,16 +19,18 @@ export default function RuleteScreen() {
   const cx = size / 2;
   const cy = size / 2;
 
-  // const itemsRaw = useStore((s) => s.drinks.store) || [];
-  const items = useStore((s) => s.drinks.store) || [];
-  console.log(items);
+  const { modal, openModal, closeModal } = useModal();
+  const { polarToCartesian, randomLightColor, describeArc } = useRouleteDrawer()
 
+  // const itemsRaw = useStore((s) => s.drinks.store) || [];
   const duration = useStore((s) => s.user.duration) || 3;
-  // нормализуем метки
-  // const items = itemsRaw.map((it) => (typeof it === "string" ? it : (it?.name ?? it?.title ?? JSON.stringify(it))));
+  const itemsRaw = useStore((s) => s.drinks.store) || [];
+  const [items, setItems] = useState(itemsRaw)
 
   const rotation = useRef(new Animated.Value(0)).current;
   const spinning = useRef(false);
+
+  let modalView = null
 
   const spin = () => {
     if (spinning.current || items.length === 0) return;
@@ -76,25 +50,42 @@ export default function RuleteScreen() {
       useNativeDriver: true,
     }).start(() => {
       const final = targetAngle % 360;
-      const won = Math.floor(final/sliceAngle) - 1;
-      console.log(won, final);
-
+      const won = Math.floor(final / sliceAngle);
       spinning.current = false;
       rotation.setValue(final); // держим значение в 0..360
 
-      Alert.alert("Result", items[won] ?? "—");
+      const winner = items[won]
+
+      openModal('info', {
+        headerText: 'Win Win Win',
+      })
+      
+      modalView = <Modal
+        type={modal.type}
+        headerText={modal.headerText}
+        warningText={modal.warningText}
+        handleYes={() => {
+          modal.onYes?.();
+          closeModal();
+        }}
+        handleNo={closeModal}
+        handleClose={closeModal}
+      >
+        <CocktailCard item={winner} />
+      </Modal>
+
+      setItems(() => items.filter(i => i.id !== winner.id))
     });
   };
-
   const rotate = rotation.interpolate({
     inputRange: [0, 360],
     outputRange: ["0deg", "-360deg"],
   });
-
   const sliceAngle = items.length > 0 ? 360 / items.length : 360;
 
   const renderWheel = (() => {
-    if (items.length === 0) { return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Нет сгенерированных коктейлей в сторе</Text>; }
+    if (items.length === 0) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Нет сгенерированных коктейлей в сторе</Text>;
+    if (items.length === 1) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Only one cocktail: </Text>;
     return (
       <>
         {/* стрелка */}
@@ -128,8 +119,7 @@ export default function RuleteScreen() {
                       alignmentBaseline="middle"
                       transform={`rotate(${mid} ${textPos.x} ${textPos.y})`}
                     >
-                      {i}
-                      {/* {title.length > 14 ? title.substr(0, 14) + "…" : title} */}
+                      {title.length > 14 ? title.substr(0, 14) + "…" : title}
                     </SvgText>
                   </G>
                 );
@@ -154,6 +144,7 @@ export default function RuleteScreen() {
       <View style={{ alignItems: "center" }}>
         {renderWheel}
       </View>
+      {modal && modalView}
     </View>
   );
 }

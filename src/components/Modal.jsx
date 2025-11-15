@@ -10,6 +10,7 @@ export default function Modal({
     warningText = "",
     headerTextColor = null,
     warningTextColor = null,
+    children,
     handleYes = () => { },
     handleNo = () => { },
     handleClose = () => { },
@@ -73,6 +74,8 @@ export default function Modal({
                         {warningText}
                     </Text>
                 )}
+
+                {children}
 
                 <View style={{
                     flexDirection: 'row',
