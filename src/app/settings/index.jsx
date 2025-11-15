@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Pressable, Text, TextInput, View } from "react-native";
+import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import DrinkSettingsCard from "../../components/DrinkSettingsCard";
 import Modal from "../../components/Modal";
 import StyledButton from "../../components/StyledButton";
@@ -96,30 +96,33 @@ export default function SettingsTab() {
                 </Pressable>
             </View>
 
-            <DrinkSettingsCard
-                title="Cocktails"
-                make={settings.cocktail.make}
-                onMakeChange={(val) => updateSetting('cocktail', 'make', val)}
-                maxIngredients={settings.cocktail.maxIngredients}
-                onMaxIngredientsChange={(val) => updateSetting('cocktail', 'maxIngredients', val)}
-                volume={settings.cocktail.volume}
-                onVolumeChange={(val) => updateSetting('cocktail', 'volume', val)}
-                quantity={settings.cocktail.quantity}
-                onQuantityChange={(val) => updateSetting('cocktail', 'quantity', val)}
-            />
-            <DrinkSettingsCard
-                title="Shots"
-                make={settings.shot.make}
-                onMakeChange={(val) => updateSetting('shot', 'make', val)}
-                maxIngredients={settings.shot.maxIngredients}
-                onMaxIngredientsChange={(val) => updateSetting('shot', 'maxIngredients', val)}
-                volume={settings.shot.volume}
-                onVolumeChange={(val) => updateSetting('shot', 'volume', val)}
-                quantity={settings.shot.quantity}
-                onQuantityChange={(val) => updateSetting('shot', 'quantity', val)}
-            />
+            <ScrollView style={{ flexGrow: 0, width: '100%' }} showsVerticalScrollIndicator={false}>
+                <DrinkSettingsCard
+                    title="Cocktails"
+                    make={settings.cocktail.make}
+                    onMakeChange={(val) => updateSetting('cocktail', 'make', val)}
+                    maxIngredients={settings.cocktail.maxIngredients}
+                    onMaxIngredientsChange={(val) => updateSetting('cocktail', 'maxIngredients', val)}
+                    volume={settings.cocktail.volume}
+                    onVolumeChange={(val) => updateSetting('cocktail', 'volume', val)}
+                    quantity={settings.cocktail.quantity}
+                    onQuantityChange={(val) => updateSetting('cocktail', 'quantity', val)}
+                />
+                <View style={{ height: SPACING.sm }} />
+                <DrinkSettingsCard
+                    title="Shots"
+                    make={settings.shot.make}
+                    onMakeChange={(val) => updateSetting('shot', 'make', val)}
+                    maxIngredients={settings.shot.maxIngredients}
+                    onMaxIngredientsChange={(val) => updateSetting('shot', 'maxIngredients', val)}
+                    volume={settings.shot.volume}
+                    onVolumeChange={(val) => updateSetting('shot', 'volume', val)}
+                    quantity={settings.shot.quantity}
+                    onQuantityChange={(val) => updateSetting('shot', 'quantity', val)}
+                />
+            </ScrollView>
 
-            <View style={[styles.rowBetween, {gap: SPACING.sm}]}>
+            <View style={[styles.rowBetween, { gap: SPACING.sm }]}>
                 <StyledButton
                     onPress={saveAllSettings}
                     text="Save Settings"

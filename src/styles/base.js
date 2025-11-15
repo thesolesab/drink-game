@@ -37,6 +37,7 @@ export const BaseStyles = StyleSheet.create({
         alignItems: 'center',
     },
     spaceBetween: {
+        gap: SPACING.sm,
         justifyContent: 'space-between',
     },
 

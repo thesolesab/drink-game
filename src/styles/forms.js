@@ -8,6 +8,8 @@ export const FormStyles = StyleSheet.create({
         borderRadius: 8,
         padding: SPACING.sm,
         color: COLORS.text,
+        width: '100%',
+        textAlign: 'center',
         ...TYPOGRAPHY.body,
     },
     inputFocused: {

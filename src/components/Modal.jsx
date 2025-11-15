@@ -3,9 +3,8 @@ import { COLORS, SPACING, TYPOGRAPHY } from "../constants";
 import { useStyles } from "../hooks/useStyles";
 import StyledButton from "./StyledButton";
 
-
 export default function Modal({
-    type = "warning", // "warning" | "success" | "error" | "info"
+    type = "info", // "warning" | "success" | "error" | "info"
     headerText = "Alert",
     warningText = "",
     headerTextColor = null,
@@ -30,7 +29,7 @@ export default function Modal({
         },
         error: {
             buttons: 'single', // Close
-            defaultWarningColor: COLORS.danger ,
+            defaultWarningColor: COLORS.danger,
         },
         info: {
             buttons: 'single', // Close
@@ -59,22 +58,29 @@ export default function Modal({
         >
             <Pressable
                 style={{
-                    backgroundColor: COLORS.background ,
+                    backgroundColor: COLORS.background,
                     borderRadius: 12,
                     padding: SPACING.md,
-                    width: '80%',
+                    width: '100%',
                     alignItems: 'center',
                     gap: SPACING.md,
                 }}
                 onPress={(e) => e.stopPropagation()} // предотвращаем пропагацию клика на фон
             >
-                <Text style={[TYPOGRAPHY.title, { color: finalHeaderColor }]}>{headerText}</Text>
-                {warningText && (
-                    <Text style={[TYPOGRAPHY.body, { color: finalWarningColor }]}>
-                        {warningText}
-                    </Text>
-                )}
+                {children ? (
+                    children
+                ) : (
+                    <>
+                        <Text style={[TYPOGRAPHY.title, { color: finalHeaderColor }]}>
+                            {headerText}
+                        </Text>
+                        {warningText ? (
+                            <Text style={[TYPOGRAPHY.body, { color: finalWarningColor }]}>
+                                {warningText}
+                            </Text>
+                        ) : null}
 
+<<<<<<< Updated upstream
                 {children}
 
                 <View style={{
@@ -96,6 +102,29 @@ export default function Modal({
                         </>
                     )}
                 </View>
+=======
+                        <View style={{
+                            flexDirection: 'row',
+                            gap: SPACING.sm,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}>
+                            {isSingleButton ? (
+                                <StyledButton onPress={handleClose} text="Close" />
+                            ) : (
+                                <>
+                                    <StyledButton onPress={handleYes} text="Yes" />
+                                    <StyledButton
+                                        onPress={handleNo || handleClose}
+                                        text="No"
+                                        style={{ backgroundColor: COLORS.secondary }}
+                                    />
+                                </>
+                            )}
+                        </View>
+                    </>
+                )}
+>>>>>>> Stashed changes
             </Pressable>
         </Pressable>
     );

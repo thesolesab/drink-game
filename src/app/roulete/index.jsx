@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 import { useRef, useState } from "react";
 import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
 import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
@@ -7,6 +8,16 @@ import StyledButton from "../../components/StyledButton";
 import { COLORS, SPACING } from "../../constants";
 import useModal from "../../hooks/useModal";
 import useRouleteDrawer from "../../hooks/useRouleteDrawer";
+=======
+import { useRouter } from "expo-router";
+import { useRef, useState } from "react";
+import { Animated, Easing, Text, useWindowDimensions, View } from "react-native";
+import Svg, { Circle, G, Path, Text as SvgText } from "react-native-svg";
+import Modal from "../../components/Modal";
+import StyledButton from "../../components/StyledButton";
+import { COLORS, SPACING, TYPOGRAPHY } from "../../constants";
+import useModal from "../../hooks/useModal";
+>>>>>>> Stashed changes
 import { useStyles } from "../../hooks/useStyles";
 import { useStore } from "../../store/useStore";
 
@@ -18,9 +29,18 @@ export default function RuleteScreen() {
   const radius = size / 2;
   const cx = size / 2;
   const cy = size / 2;
+  const router = useRouter();
+  const { modal, openModal, closeModal } = useModal()
+  const [winner, setWinner] = useState(null)
 
+<<<<<<< Updated upstream
   const { modal, openModal, closeModal } = useModal();
   const { polarToCartesian, randomLightColor, describeArc } = useRouleteDrawer()
+=======
+  // const itemsRaw = useStore((s) => s.drinks.store) || [];
+  const itemsRaw = useStore((s) => s.drinks.store) || [];
+  const [items, setItems] = useState(itemsRaw)
+>>>>>>> Stashed changes
 
   // const itemsRaw = useStore((s) => s.drinks.store) || [];
   const duration = useStore((s) => s.user.duration) || 3;
@@ -53,6 +73,7 @@ export default function RuleteScreen() {
       const won = Math.floor(final / sliceAngle);
       spinning.current = false;
       rotation.setValue(final); // держим значение в 0..360
+<<<<<<< Updated upstream
 
       const winner = items[won]
 
@@ -75,6 +96,10 @@ export default function RuleteScreen() {
       </Modal>
 
       setItems(() => items.filter(i => i.id !== winner.id))
+=======
+      setWinner(items[won])
+      setItems(prev => prev.filter((_, idx) => idx !== won))
+>>>>>>> Stashed changes
     });
   };
   const rotate = rotation.interpolate({
@@ -84,8 +109,17 @@ export default function RuleteScreen() {
   const sliceAngle = items.length > 0 ? 360 / items.length : 360;
 
   const renderWheel = (() => {
+<<<<<<< Updated upstream
     if (items.length === 0) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Нет сгенерированных коктейлей в сторе</Text>;
     if (items.length === 1) return <Text style={{ marginTop: SPACING.sm, color: COLORS.danger }}>Only one cocktail: </Text>;
+=======
+    if (items.length === 0) return (
+      <View>
+        <Text style={[TYPOGRAPHY.heading, { color: COLORS.danger }]}>Нет сгенерированных коктейлей в сторе</Text>
+        <StyledButton onPress={() => router.push('/generator')} text="Go to Generator" />
+      </View>
+    )
+>>>>>>> Stashed changes
     return (
       <>
         {/* стрелка */}
@@ -117,7 +151,7 @@ export default function RuleteScreen() {
                       fontWeight="700"
                       textAnchor="middle"
                       alignmentBaseline="middle"
-                      transform={`rotate(${mid} ${textPos.x} ${textPos.y})`}
+                      transform={`rotate(${mid + 90} ${textPos.x} ${textPos.y})`}
                     >
                       {title.length > 14 ? title.substr(0, 14) + "…" : title}
                     </SvgText>
@@ -144,7 +178,17 @@ export default function RuleteScreen() {
       <View style={{ alignItems: "center" }}>
         {renderWheel}
       </View>
+<<<<<<< Updated upstream
       {modal && modalView}
+=======
+      {modal &&
+        <Modal
+          handleClose={closeModal}
+        >
+
+        </Modal>
+      }
+>>>>>>> Stashed changes
     </View>
   );
 }
